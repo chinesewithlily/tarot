@@ -761,7 +761,7 @@ function renderSlots(){
   const sp=SPREADS[spreadKey];
   slots.style.setProperty('--sw',sp.n===1?'200px':sp.n<=3?'170px':sp.n<=6?'118px':'96px');
   slots.classList.toggle('compact',sp.n>4);
-  slots.innerHTML=sp.labels.map((l,i)=>`<div class="slot"><div class="slot-label">${sp.n>1?`<span class="num">${i+1}</span>`:''}${LANG==='zh'?`${l[0]}<small>${l[1]}</small><small class="ja" lang="ja">${l[2]}</small>`:(LANG==='en'?`${l[1]}<small>${l[0]}</small>`:`<span lang="ja">${l[2]}</span><small>${l[0]}</small>`)}</div><div class="frame" data-s="${i}">${i+1}</div></div>`).join('');
+  slots.innerHTML=sp.labels.map((l,i)=>`<div class="slot"><div class="slot-label">${sp.n>1?`<span class="num">${i+1}</span>`:''}${LANG==='zh'?`${l[0]}<small>${l[1]}</small><small class="ja" lang="ja">${l[2]}</small>`:(LANG==='en'?`${l[1]}<small>${l[0]}</small>`:`<span lang="ja">${l[2]}</span><small>${l[0]}</small>`)}</div><div class="frame" data-s="${i}">${sp.n>1?i+1:''}</div></div>`).join('');
 }
 function updateHint(){
   const sp=SPREADS[spreadKey];const left=sp.n-picks.length;
@@ -960,7 +960,7 @@ renderSpreadPicker();shuffleDeck();phase=$('#cutToggle').checked?'cut':'pick';re
 <script>(function(){try{var q=location.search;if(/[?&]notrack=1/.test(q))localStorage.setItem('cw-notrack','1');if(/[?&]notrack=0/.test(q))localStorage.removeItem('cw-notrack');if(localStorage.getItem('cw-notrack')==='1'){console.log('analytics off on this device');return}}catch(e){}var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token": "a9294b7012bb4e4bbf4b67f23979b202"}');document.body.appendChild(s)})();</script>
 <!-- End Cloudflare Web Analytics -->
 <!-- Auto-update: GitHub Pages lets browsers cache pages ~10 min; check for a newer build and refresh once -->
-<script>(function(){var B='BUILD:20261027193549';try{if(location.protocol.indexOf('http')!==0)return;
+<script>(function(){var B='BUILD:20261027195457';try{if(location.protocol.indexOf('http')!==0)return;
 fetch(location.href,{cache:'reload'}).then(function(r){return r.text()}).then(function(t){var m=t.match(/BUILD:(\d+)/);
 if(m&&('BUILD:'+m[1])!==B){var k='autoupd-'+m[1];if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');location.reload()}}).catch(function(){})}catch(e){}})();</script>
 </body>
