@@ -15,7 +15,7 @@
 :root{
   --bg:#fbefe9; --surface:#fff8f4; --ink:#5a3a31; --muted:#8c6a5f; --gold:#a8783a; --gold-soft:#e6cc92;
   --rose:#c4705f; --on-rose:#fffaf6; --chip:#f6dfd7; --mist:#dbe8f0; --line:rgba(168,120,58,.32);
-  --glow1:rgba(255,255,255,.85); --glow2:rgba(205,224,236,.75); --shadow:rgba(120,70,55,.18);
+  --glow1:rgba(255,255,255,.85); --rg1:#c08470; --rg2:#e9b8a6; --rgglow:rgba(214,150,128,.45); --glint:rgba(255,248,240,.95); --glow2:rgba(205,224,236,.75); --shadow:rgba(120,70,55,.18);
   /* one UI typeface everywhere (system sans, same as the intro line); serif only on the printed card art */
   --font-ui:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
   --font-zh:var(--font-ui); --font-en:var(--font-ui);
@@ -26,11 +26,11 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#22171d; --surface:#2e2028; --ink:#f4e4dc; --muted:#c4a79c; --gold:#e2bf7c; --gold-soft:#8a6a3a;
   --rose:#e39b8b; --on-rose:#2a1a20; --chip:#3d2a31; --mist:#2b3944; --line:rgba(226,191,124,.28);
-  --glow1:rgba(227,155,139,.13); --glow2:rgba(120,155,185,.12); --shadow:rgba(0,0,0,.45); color-scheme:dark}}
+  --glow1:rgba(227,155,139,.13); --rg1:#d99a88; --rg2:#f6d0c0; --rgglow:rgba(240,170,150,.4); --glint:rgba(255,252,248,1); --glow2:rgba(120,155,185,.12); --shadow:rgba(0,0,0,.45); color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#22171d; --surface:#2e2028; --ink:#f4e4dc; --muted:#c4a79c; --gold:#e2bf7c; --gold-soft:#8a6a3a;
   --rose:#e39b8b; --on-rose:#2a1a20; --chip:#3d2a31; --mist:#2b3944; --line:rgba(226,191,124,.28);
-  --glow1:rgba(227,155,139,.13); --glow2:rgba(120,155,185,.12); --shadow:rgba(0,0,0,.45); color-scheme:dark}
+  --glow1:rgba(227,155,139,.13); --rg1:#d99a88; --rg2:#f6d0c0; --rgglow:rgba(240,170,150,.4); --glint:rgba(255,252,248,1); --glow2:rgba(120,155,185,.12); --shadow:rgba(0,0,0,.45); color-scheme:dark}
 
 @property --h{syntax:'<angle>';inherits:true;initial-value:0deg}
 *{box-sizing:border-box}
@@ -46,10 +46,16 @@ button,input,textarea{font:inherit;color:inherit}
 h1{margin:0;font-family:var(--font-zh);font-weight:700;font-size:clamp(28px,6vw,40px);letter-spacing:.08em;text-wrap:balance;line-height:1.3}
 .sub{margin:0;max-width:34em;color:var(--muted);text-wrap:balance}
 .slogan{display:grid;justify-items:center;gap:4px;margin:4px 0 10px}
-.slogan-en{margin:0;display:flex;align-items:center;gap:12px;font-family:var(--font-en);font-weight:600;font-size:clamp(19px,4.8vw,24px);letter-spacing:.02em;line-height:1.3}
+.slogan-en{margin:0;display:flex;align-items:center;gap:10px;white-space:nowrap;font-family:var(--font-en);font-weight:600;font-size:clamp(19px,4.8vw,24px);letter-spacing:.02em;line-height:1.3}
 .sl-text{background:linear-gradient(100deg,var(--gold) 10%,var(--rose) 55%,var(--gold) 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sl-line{flex:none;width:clamp(18px,6vw,36px);height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
-.sl-line.r{background:linear-gradient(270deg,transparent,var(--gold))}
+.sl-line{position:relative;overflow:hidden;flex:none;width:clamp(16px,5.2vw,44px);height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--rg1) 40%,var(--rg2));box-shadow:0 0 6px var(--rgglow);animation:slglow 3.6s ease-in-out infinite}
+@keyframes slglow{0%,100%{box-shadow:0 0 4px var(--rgglow)}50%{box-shadow:0 0 10px var(--rgglow),0 0 2px var(--glint)}}
+.sl-line.r{background:linear-gradient(270deg,transparent,var(--rg1) 40%,var(--rg2))}
+.sl-line::after{content:"";position:absolute;top:-2px;bottom:-2px;left:0;width:60%;background:linear-gradient(90deg,transparent,var(--glint) 50%,transparent);transform:translateX(-130%);animation:slglint 3.6s ease-in-out infinite}
+.sl-line.r::after{animation-name:slglintR}
+@keyframes slglint{0%{transform:translateX(-130%)}55%,100%{transform:translateX(260%)}}
+@keyframes slglintR{0%{transform:translateX(260%)}55%,100%{transform:translateX(-130%)}}
+@media (prefers-reduced-motion:reduce){.sl-line,.sl-line::after{animation:none}.sl-line::after{opacity:0}}
 .slogan-tr{margin:0;font-size:14px;letter-spacing:.1em;color:var(--muted);text-align:center}
 .sl-py{display:block;font-size:12px;letter-spacing:.02em;color:var(--rose)}
 
@@ -954,7 +960,7 @@ renderSpreadPicker();shuffleDeck();phase=$('#cutToggle').checked?'cut':'pick';re
 <script>(function(){try{var q=location.search;if(/[?&]notrack=1/.test(q))localStorage.setItem('cw-notrack','1');if(/[?&]notrack=0/.test(q))localStorage.removeItem('cw-notrack');if(localStorage.getItem('cw-notrack')==='1'){console.log('analytics off on this device');return}}catch(e){}var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token": "a9294b7012bb4e4bbf4b67f23979b202"}');document.body.appendChild(s)})();</script>
 <!-- End Cloudflare Web Analytics -->
 <!-- Auto-update: GitHub Pages lets browsers cache pages ~10 min; check for a newer build and refresh once -->
-<script>(function(){var B='BUILD:20261027192307';try{if(location.protocol.indexOf('http')!==0)return;
+<script>(function(){var B='BUILD:20261027193549';try{if(location.protocol.indexOf('http')!==0)return;
 fetch(location.href,{cache:'reload'}).then(function(r){return r.text()}).then(function(t){var m=t.match(/BUILD:(\d+)/);
 if(m&&('BUILD:'+m[1])!==B){var k='autoupd-'+m[1];if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');location.reload()}}).catch(function(){})}catch(e){}})();</script>
 </body>
