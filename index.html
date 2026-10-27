@@ -91,13 +91,15 @@ textarea::placeholder{color:var(--muted);opacity:.8}
 .fan{position:relative;width:100%;max-width:760px;transition:height .3s}
 .fc{position:absolute;left:50%;top:26px;width:var(--cw);height:var(--ch);padding:2px;border:0;border-radius:8%/4.8%;cursor:pointer;
   background:conic-gradient(from 200deg,#f7c6d9,#c9e7f7,#d6f5d1,#fbedb5,#f5c3c0,#dccbf5,#f7c6d9);
-  transform-origin:50% var(--R);transform:translateX(-50%) rotate(var(--a)) translateY(var(--lift,0px));
+  transform-origin:50% var(--R);transform:translateX(-50%) rotate(calc(var(--a) + var(--cr,0deg))) translateY(var(--lift,0px));
   transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .3s;box-shadow:0 4px 10px -4px var(--shadow)}
 .fc svg{width:100%;height:100%;display:block;border-radius:7%/4.2%}
-.fc:hover,.fc:focus-visible{--lift:-16px}
+@media (hover:hover){.fan:not(.cutting) .fc:hover{--lift:-16px}}
+.fan:not(.cutting) .fc:focus-visible{--lift:-16px}
+.fan.cutting .fc{cursor:row-resize}
 .fc.taken{opacity:0;pointer-events:none}
 .fan.done .fc:not(.taken){opacity:.45;pointer-events:none}
-.fan.gather .fc{transform:translateX(-50%) rotate(calc(var(--j)*1deg)) translateY(46px)}
+.fan.gather .fc{transform:translateX(-50%) rotate(calc(var(--j)*1deg)) translateY(calc(46px + var(--cy,0px)))}
 .ghost-card{position:fixed;z-index:60;pointer-events:none;padding:2px;border-radius:8%/4.8%;background:conic-gradient(from 200deg,#f7c6d9,#c9e7f7,#d6f5d1,#fbedb5,#f5c3c0,#dccbf5,#f7c6d9)}
 .ghost-card svg{width:100%;height:100%;display:block;border-radius:7%/4.2%}
 
@@ -536,8 +538,8 @@ const T={
   shuffle:'Shuffle · 洗牌',revealAll:'Reveal all',redraw:'Draw again',histTitle:'Recent readings',
   ph:'e.g. Is this a good month to start something new?',
   cnt:n=>n+(n>1?' cards':' card'),
-  hCut:'Cut the deck first: tap any point in the pile',hPick:n=>`Think of your question and choose <b>${n}</b> ${n>1?'cards':'card'} by intuition`,
-  hReveal:'Tap a card to turn it over',hDone:'Your reading is below',hCutting:'Cutting…',hShuffling:'Shuffling…',
+  hCut:'Cut the deck: tap where you want to split the pile in two. This only reorders the deck — you will draw next',hPick:n=>`Think of your question and choose <b>${n}</b> ${n>1?'cards':'card'} by intuition`,
+  hReveal:'Tap a card to turn it over',hDone:'Your reading is below',hCutting:'Splitting the deck and swapping the two piles…',hShuffling:'Shuffling…',
   aCard:i=>`Card ${i}`,aFlip:i=>`Turn over card ${i}`,
   defQ:'What the cards want to tell you today',up:'Upright <small>正位</small>',rev:'Reversed <small>逆位</small>',
   copy:'Copy result',copied:'Copied',copyFail:'Please copy the text below',again:'Draw again',
@@ -553,8 +555,8 @@ const T={
   shuffle:'シャッフル · 洗牌',revealAll:'すべてめくる',redraw:'引き直す',histTitle:'最近の占い',
   ph:'例：今月は新しいことを始めるのに良い時期？',
   cnt:n=>n+'枚',
-  hCut:'まずカット：カードの山の好きな位置をタップしてください',hPick:n=>`質問を思い浮かべて、直感で <b>${n}</b> 枚選んでください`,
-  hReveal:'カードをタップしてめくりましょう',hDone:'下に結果が表示されています',hCutting:'カット中…',hShuffling:'シャッフル中…',
+  hCut:'カット：山を二つに分けたい位置をタップしてください。順番を入れ替えるだけで、このあと引きます',hPick:n=>`質問を思い浮かべて、直感で <b>${n}</b> 枚選んでください`,
+  hReveal:'カードをタップしてめくりましょう',hDone:'下に結果が表示されています',hCutting:'山を二つに分けて入れ替えています…',hShuffling:'シャッフル中…',
   aCard:i=>`${i}枚目のカード`,aFlip:i=>`${i}枚目をめくる`,
   defQ:'今日のカードからのメッセージ',up:'正位置 <small>正位</small>',rev:'逆位置 <small>逆位</small>',
   copy:'結果をコピー',copied:'コピーしました',copyFail:'下の文字を手動でコピーしてください',again:'もう一度引く',
@@ -749,7 +751,7 @@ function updateHint(){
   fan.classList.toggle('cutting',phase==='cut');
   if(LANG!=='zh'){const t=L_();
     if(phase==='cut')setHint(t.hCut);else if(left>0)setHint(t.hPick(left));else if(picks.some(p=>!p.open))setHint(t.hReveal);else setHint(t.hDone);}
-  else if(phase==='cut')setHint('先切牌：憑感覺點牌堆的一個位置 <em>— tap anywhere to cut</em>');
+  else if(phase==='cut')setHint('切牌：憑感覺點一個位置，把牌從那裡分成兩疊、上下交換。<br>這一步只是調整順序，接著才抽牌');
   else if(left>0)setHint(`靜下心想著你的問題，憑直覺選 <b>${left}</b> 張 <em>— pick ${left} ${left>1?'cards':'card'}</em>`);
   else if(picks.some(p=>!p.open))setHint('點一下牌面翻開 <em>— tap to reveal</em>');
   else setHint('牌已翻開，往下看解讀 <em>— your reading is below</em>');
@@ -775,8 +777,20 @@ function cutAt(el){
   deck=deck.slice(k).concat(deck.slice(0,k));
   phase='pick';
   if(reduce){updateHint();return}
-  busy=true;fan.classList.add('gather');setHint(LANG==='zh'?'切牌中… <em>— cutting</em>':L_().hCutting);
-  setTimeout(()=>{fan.classList.remove('gather');busy=false;updateHint()},600);
+  busy=true;setHint(LANG==='zh'?'從這裡分成兩疊，上下交換…':L_().hCutting);
+  const cards=[...fan.children],i=+el.dataset.i;
+  // 1) part the fan at the tapped point so the split is visible
+  cards.forEach((c,j)=>{c.style.setProperty('--cr',(j<i?-8:8)+'deg');c.style.setProperty('--lift','0px')});
+  setTimeout(()=>{
+    // 2) gather into one pile: the second pile is lifted and placed on top
+    cards.forEach((c,j)=>{c.style.removeProperty('--cr');if(j>=i){c.style.zIndex=100+j;c.style.setProperty('--cy','-40px')}});
+    fan.classList.add('gather');
+    setTimeout(()=>{cards.forEach(c=>c.style.setProperty('--cy','0px'));
+      // 3) spread the newly ordered deck again
+      setTimeout(()=>{cards.forEach((c,j)=>{c.style.zIndex=j;c.style.removeProperty('--cy');c.style.removeProperty('--lift')});
+        fan.classList.remove('gather');busy=false;updateHint()},380);
+    },420);
+  },420);
 }
 async function pick(el){
   const sp=SPREADS[spreadKey];
