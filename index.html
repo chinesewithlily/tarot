@@ -189,6 +189,10 @@ textarea::placeholder{color:var(--muted);opacity:.8}
   .side{animation:none}
   .fc,.flip-inner,.tilt-in{transition:none}
 }
+.langsw{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--card,rgba(255,253,249,.7));box-shadow:inset 0 0 0 1px rgba(201,161,90,.45);margin-bottom:6px}
+.langsw button{border:0;background:none;padding:5px 13px;border-radius:999px;font-size:13px;letter-spacing:.04em;color:var(--muted);cursor:pointer}
+.langsw button[aria-pressed="true"]{background:var(--gold,#c9a15a);color:#fffdf9}
+.r-text .zh-learn{margin:2px 0 6px;font-size:15px}.r-text .zh-learn b{font-size:18px;letter-spacing:.12em}.r-text .zh-learn .py{margin-left:8px}
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
@@ -214,32 +218,33 @@ textarea::placeholder{color:var(--muted);opacity:.8}
 <main class="wrap">
   <header class="top">
     <svg class="moon" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="url(#gm)" stroke-width="2" stroke-linecap="round"><path d="M62 18A32 32 0 1 0 62 78A34 34 0 0 1 62 18Z" fill="url(#gm)" fill-opacity=".25"/></g><path d="M80 26Q80 34 88 34Q80 34 80 42Q80 34 72 34Q80 34 80 26Z" fill="url(#gm)"/></svg>
-    <p class="eyebrow">塔羅學中文 · Tarot &amp; Chinese · <span lang="ja">日本語</span></p>
-    <h1>今天想問什麼？</h1>
-    <p class="sub">選一種牌陣，寫下問題，憑直覺抽牌。每張牌都附中文、拼音、英文和日文。</p>
+    <div class="langsw" role="group" aria-label="Language / 語言 / 言語"><button type="button" data-lang="zh">中文</button><button type="button" data-lang="en">English</button><button type="button" data-lang="ja" lang="ja">日本語</button></div>
+    <p class="eyebrow" data-i18n="eyebrow">塔羅學中文 · Tarot &amp; Chinese · <span lang="ja">日本語</span></p>
+    <h1 data-i18n="h1">今天想問什麼？</h1>
+    <p class="sub" data-i18n="sub">選一種牌陣，寫下問題，憑直覺抽牌。每張牌都附中文、拼音、英文和日文。</p>
   </header>
 
   <section class="setup" aria-label="抽牌設定">
-    <ol class="steps"><li>選牌陣</li><li>默想問題，按「洗牌」</li><li>點一個位置切牌</li><li>依牌位抽牌、翻牌</li></ol>
+    <ol class="steps" data-i18n="steps"><li>選牌陣</li><li>默想問題，按「洗牌」</li><li>點一個位置切牌</li><li>依牌位抽牌、翻牌</li></ol>
     <div>
-      <p class="label">牌陣 SPREAD · <span lang="ja">スプレッド</span></p>
+      <p class="label" data-i18n="spreadLabel">牌陣 SPREAD · <span lang="ja">スプレッド</span></p>
       <div class="spread-groups" id="spreadGroups" role="radiogroup" aria-label="牌陣"></div>
     </div>
     <div class="sp-info" id="spInfo" aria-live="polite"></div>
     <div>
-      <label class="label" for="q">你的問題 QUESTION（可不填）</label>
+      <label class="label" for="q" data-i18n="qLabel">你的問題 QUESTION（可不填）</label>
       <textarea id="q" maxlength="120" placeholder="例如：這個月適合開始新計畫嗎？"></textarea>
     </div>
     <div>
-      <p class="label">牌組設定 DECK · <span lang="ja">デッキ設定</span></p>
+      <p class="label" data-i18n="deckLabel">牌組設定 DECK · <span lang="ja">デッキ設定</span></p>
       <div class="switches">
-        <label class="switch" for="revToggle"><input type="checkbox" id="revToggle" checked> 包含逆位 <small>Reversed · <span lang="ja">逆位置あり</span></small></label>
-        <label class="switch" for="majorToggle"><input type="checkbox" id="majorToggle"> 只用 22 張大牌 <small>Major Arcana only · <span lang="ja">大アルカナのみ</span></small></label>
-        <label class="switch" for="cutToggle"><input type="checkbox" id="cutToggle" checked> 抽牌前先切牌 <small>Cut the deck · <span lang="ja">カットする</span></small></label>
+        <label class="switch" for="revToggle"><input type="checkbox" id="revToggle" checked> <span data-i18n="revT">包含逆位 <small>Reversed · <span lang="ja">逆位置あり</span></small></span></label>
+        <label class="switch" for="majorToggle"><input type="checkbox" id="majorToggle"> <span data-i18n="majT">只用 22 張大牌 <small>Major Arcana only · <span lang="ja">大アルカナのみ</span></small></span></label>
+        <label class="switch" for="cutToggle"><input type="checkbox" id="cutToggle" checked> <span data-i18n="cutT">抽牌前先切牌 <small>Cut the deck · <span lang="ja">カットする</span></small></span></label>
       </div>
     </div>
     <div class="row" style="justify-content:center">
-      <button class="btn" id="shuffleBtn" type="button">洗牌</button>
+      <button class="btn" id="shuffleBtn" type="button" data-i18n="shuffle">洗牌</button>
     </div>
   </section>
 
@@ -248,15 +253,15 @@ textarea::placeholder{color:var(--muted);opacity:.8}
     <div class="fan" id="fan"></div>
     <div class="slots" id="slots"></div>
     <div class="actions">
-      <button class="btn" id="revealAll" type="button" hidden>翻開全部</button>
-      <button class="btn ghost" id="resetBtn" type="button" hidden>重新抽牌</button>
+      <button class="btn" id="revealAll" type="button" hidden data-i18n="revealAll">翻開全部</button>
+      <button class="btn ghost" id="resetBtn" type="button" hidden data-i18n="redraw">重新抽牌</button>
     </div>
   </section>
 
   <section class="reading" id="reading" hidden aria-live="polite"></section>
 
   <section class="history" aria-label="最近抽牌">
-    <h2>最近抽牌</h2>
+    <h2 data-i18n="histTitle">最近抽牌</h2>
     <div id="hist"></div>
   </section>
 </main>
@@ -514,12 +519,66 @@ wands:[
 ["リーダーシップ|ビジョン","先を見通すリーダーとして、みんなを引っ張る。","独断的、または期待が高すぎる。"]]
 };
 
+const EN_MAJ=[["Take the first step with curiosity. Trust the journey – you don't need everything to be ready.", "Impulsive or naïve. Look carefully at the path before you set off."], ["You already have what you need. Focus, and your ideas can become real.", "Your skills are scattered or misused. Beware of empty talk and manipulation."], ["The answer lies in stillness. Listen to your inner voice before you act.", "You're ignoring your intuition, or something hasn't surfaced yet. Keep observing."], ["Look after yourself and those around you, and good things will grow naturally.", "Giving too much or feeling stuck. Bring your energy back to yourself first."], ["Set rules and boundaries, and take charge in a steady way.", "Too much control or too little discipline. You need both structure and flexibility."], ["Learn from people with experience and follow a path that has been proven.", "You don't want to be boxed in. It's a good time to find your own way."], ["A sincere connection, and a choice that matches your values.", "An unbalanced relationship or indecision. Work out what you truly want first."], ["Once your direction is clear, go full speed ahead. Victory belongs to the determined.", "Mixed directions or a loss of control. Pause and recalibrate."], ["True strength is gentle yet firm. Patience beats brute force.", "Self-doubt or emotions running high. Be kind to yourself."], ["Step back for a while. Time alone will bring clarity.", "Too long in your shell can feel lonely. It's time to reconnect with others."], ["Things are turning. Go with the flow and you'll catch the opportunity.", "A temporary low or resistance to change. The wheel will turn again."], ["Be honest and make a fair decision. What goes around comes around.", "Something is unfair or someone is avoiding responsibility. Check contracts and details."], ["Look at things from a new angle. Waiting can also be a way forward.", "Stuck but unwilling to let go. Putting things off only prolongs the standstill."], ["One chapter ends, making room for a new beginning.", "Clinging on out of fear of change, so the transformation is delayed."], ["Blend things slowly and find a rhythm that's just right.", "Too much or too little. Some part of your life is out of balance."], ["Notice what you're hooked on or tied to. Awareness is the first step to freedom.", "You're breaking free and taking back control."], ["A sudden change shakes old structures and the truth comes out.", "You've dodged a storm, or change is brewing on the inside."], ["Calm after the storm. Trust that the future will be brighter.", "Losing faith for a while. Look after your heart first."], ["Things aren't clear yet. Don't let fear lead you.", "The fog is lifting and the truth is slowly becoming clear."], ["Success, joy and energy – everything is bright.", "Happiness is briefly clouded over, or expectations are a little too rosy."], ["Hear your inner calling and make an important decision.", "Self-criticism or a missed moment. Forgive your past self."], ["A journey has come full circle. It's worth celebrating.", "Just one step to go. Don't give up before the finish line."]];
+const EN_MIN={"cups": [["Your heart is overflowing – a new relationship or inspiration is beginning.", "Emotions are blocked. Start by acknowledging your own feelings."], ["Mutual attraction and understanding in a relationship.", "Crossed wires. The relationship needs realigning."], ["Celebrate with good friends – your social luck is strong.", "Too much partying, or friction within a small circle."], ["Nothing in front of you excites you, and you may miss a new invitation.", "Your spirits lift and you're ready to welcome new chances."], ["It's natural to grieve a loss, but some cups are still standing.", "Slowly moving on from sadness and looking ahead."], ["Old friends and memories bring warmth. Keep your childlike kindness.", "Stuck in the past for too long. It's time to move on."], ["There are many options, but not all of them are real. Look closely before you choose.", "Coming back from daydreams to reality and making a decision."], ["Let go of what no longer fulfils you and search for deeper meaning.", "Wanting to leave but not daring to, or deciding to turn back."], ["A wish comes true. Enjoy the contentment of the moment.", "Satisfied on the surface, but a little empty inside."], ["A happy home and emotional fulfilment.", "Disharmony in the family or mismatched expectations."], ["A gentle message or a creative idea arrives.", "Moody, or expressing yourself in an immature way."], ["A romantic invitation – follow your heart.", "Mood swings, and promises that may not be kept."], ["Care for others with kindness and empathy, and care for yourself too.", "Emotionally drained, with blurred boundaries."], ["Emotionally steady – calm yet warm.", "Bottling up feelings, or using emotions to control others."]], "pentacles": [["A new money or work opportunity appears.", "An opportunity slips away, or the plan isn't realistic."], ["Juggling many things at once – stay flexible.", "Stretched too thin. Time to prioritise."], ["Teamwork goes smoothly and your skills are recognised.", "Poor teamwork, and quality suffers."], ["Protect your resources and play it safe.", "Too tight-fisted, or your finances start to slip."], ["A hard time. Remember to ask for help.", "Gradually getting through the difficulty."], ["Giving and receiving are in balance.", "Giving and taking are uneven – watch for strings attached."], ["Growth takes time. Assess the results before carrying on.", "Lots of effort, little return. Time to change your approach."], ["Improving your skills step by step.", "Repetition without progress, or perfectionism."], ["Enjoying the rewards of your own hard work.", "Relying too much on others, or overspending."], ["Long-term wealth and family support.", "Disputes over family or property."], ["Keen to learn and down to earth – a good time to start something new.", "Procrastination or a lack of planning."], ["Slow but reliable – you'll see it through.", "Stagnant, bored or too stubborn."], ["Making everyday life warm and secure.", "Forgetting yourself for the sake of work or family."], ["Career success and financial stability.", "Too focused on money, or becoming stubborn."]], "swords": [["Your thinking becomes clear and the truth emerges.", "Muddled thoughts, or hurtful words."], ["Caught in a dilemma. Be honest with yourself first.", "Too much information – but a decision is finally coming."], ["A painful truth. Allow yourself to be sad.", "The wound is slowly healing."], ["Stop and recharge – rest isn't laziness.", "You've rested enough. Time to set off again."], ["In an argument, nobody really wins.", "Making peace, or letting the quarrel go."], ["Leaving a difficult situation and heading towards calmer waters.", "Wanting to leave but unable to let go."], ["Someone has a hidden agenda – pay attention to the details.", "Coming clean, or a scheme is exposed."], ["Trapped by your own thoughts, but the way out has been there all along.", "Breaking free of limits and regaining your freedom."], ["Late-night worries feel bigger than they are. Talking about them helps.", "The anxiety eases, or it's time to ask for help."], ["The worst has happened. From here, things can only get better.", "Slowly recovering from rock bottom."], ["Curious and eager to learn – watch for new information.", "Gossip, or speaking without thinking."], ["Quick to act and speaks plainly.", "Reckless and impulsive."], ["Clear-headed and rational, with firm boundaries.", "Too cold or too sharp."], ["Making judgements with logic and principles.", "Abusing power, or being too harsh."]], "wands": [["A new passion and a spark of creativity.", "Low motivation, or things are delayed."], ["Look to the future and plan your next step.", "Fear of the unknown keeps you in your comfort zone."], ["Your plans are expanding and good news is on its way.", "Progress is delayed."], ["A milestone worth celebrating, and a happy home.", "Unsettled during a time of transition."], ["Clashing opinions, but they also help you grow.", "Avoiding conflict, or the conflict comes to an end."], ["Your hard work is noticed and applauded.", "Lacking confidence, or praise that isn't deserved."], ["Stand your ground and hold on to your beliefs.", "Worn out from defending yourself and tempted to give up."], ["Things move quickly and news arrives soon.", "Delays, or a chaotic pace."], ["You're nearly at the finish – hold on a little longer.", "Exhausted and in need of rest."], ["You're carrying too much. Learn to share the load.", "Putting down burdens you don't need."], ["Full of curiosity and enthusiasm for new things.", "Enthusiasm that fades quickly."], ["Bold action and plenty of charm.", "Impulsive, or giving up halfway."], ["Confident and warm, drawing people in.", "Jealousy, or wavering confidence."], ["A visionary leader who takes everyone forward.", "Too domineering, or expectations are too high."]]};
+
+/* ---------- Language (zh = original mixed view; en = British English; ja = Japanese) ---------- */
+const T={
+ en:{eyebrow:'Tarot &amp; Chinese · 塔羅學中文',h1:'What would you like to ask today?',
+  sub:'Choose a spread, write your question and draw cards by intuition. Every card comes with its Chinese name and pinyin, so you learn a little Chinese each time.',
+  steps:'<li>Choose a spread</li><li>Focus on your question and tap ‘Shuffle’</li><li>Tap anywhere in the pile to cut</li><li>Draw your cards and turn them over</li>',
+  spreadLabel:'Spread · 牌陣',qLabel:'Your question (optional) · 問題',deckLabel:'Deck settings · 牌組設定',
+  revT:'Include reversed cards <small>逆位</small>',majT:'Major Arcana only (22 cards) <small>只用大牌</small>',cutT:'Cut the deck before drawing <small>切牌</small>',
+  shuffle:'Shuffle · 洗牌',revealAll:'Reveal all',redraw:'Draw again',histTitle:'Recent readings',
+  ph:'e.g. Is this a good month to start something new?',
+  cnt:n=>n+(n>1?' cards':' card'),
+  hCut:'Cut the deck first: tap any point in the pile',hPick:n=>`Think of your question and choose <b>${n}</b> ${n>1?'cards':'card'} by intuition`,
+  hReveal:'Tap a card to turn it over',hDone:'Your reading is below',hCutting:'Cutting…',hShuffling:'Shuffling…',
+  aCard:i=>`Card ${i}`,aFlip:i=>`Turn over card ${i}`,
+  defQ:'What the cards want to tell you today',up:'Upright <small>正位</small>',rev:'Reversed <small>逆位</small>',
+  copy:'Copy result',copied:'Copied',copyFail:'Please copy the text below',again:'Draw again',
+  note:'Card meanings are for self-reflection and entertainment only. Please base important decisions on your real circumstances.',
+  empty:'No readings yet. Each reading is saved on this device (up to 8).',revMark:' (reversed)',
+  yn:{y:['Yes','Leaning towards yes'],m:['Not yet','The timing isn’t right yet, or the answer is still unclear'],n:['No','Leaning towards no']},
+  loc:'en-GB',learn:'Chinese',kw:'Keywords',q:'Question',ans:'Answer'},
+ ja:{eyebrow:'タロットで中国語 · 塔羅學中文',h1:'今日は何を占いますか？',
+  sub:'スプレッドを選んで質問を書き、直感でカードを引きましょう。どのカードにも中国語の名前とピンインが付いているので、少しずつ中国語も覚えられます。',
+  steps:'<li>スプレッドを選ぶ</li><li>質問を思い浮かべて「シャッフル」</li><li>好きな位置をタップしてカット</li><li>カードを引いてめくる</li>',
+  spreadLabel:'スプレッド · 牌陣',qLabel:'あなたの質問（任意）· 問題',deckLabel:'デッキ設定 · 牌組設定',
+  revT:'逆位置を含める <small>逆位</small>',majT:'大アルカナのみ（22枚）<small>只用大牌</small>',cutT:'引く前にカットする <small>切牌</small>',
+  shuffle:'シャッフル · 洗牌',revealAll:'すべてめくる',redraw:'引き直す',histTitle:'最近の占い',
+  ph:'例：今月は新しいことを始めるのに良い時期？',
+  cnt:n=>n+'枚',
+  hCut:'まずカット：カードの山の好きな位置をタップしてください',hPick:n=>`質問を思い浮かべて、直感で <b>${n}</b> 枚選んでください`,
+  hReveal:'カードをタップしてめくりましょう',hDone:'下に結果が表示されています',hCutting:'カット中…',hShuffling:'シャッフル中…',
+  aCard:i=>`${i}枚目のカード`,aFlip:i=>`${i}枚目をめくる`,
+  defQ:'今日のカードからのメッセージ',up:'正位置 <small>正位</small>',rev:'逆位置 <small>逆位</small>',
+  copy:'結果をコピー',copied:'コピーしました',copyFail:'下の文字を手動でコピーしてください',again:'もう一度引く',
+  note:'カードの意味は自分を見つめるための参考・娯楽です。大切なことは実際の状況をもとに判断してください。',
+  empty:'まだ記録がありません。占った結果はこの端末に保存されます（最大8件）。',revMark:'（逆）',
+  yn:{y:['はい','前向きな答え'],m:['もう少し待って','まだタイミングではない、または答えがはっきりしない'],n:['いいえ','慎重に']},
+  loc:'ja-JP',learn:'中国語',kw:'キーワード',q:'質問',ans:'答え'}
+};
+const LKEY='tarot-xuezhongwen-lang';
+let LANG=(()=>{try{const m=location.search.match(/[?&]lang=(zh|en|ja)\b/);if(m)return m[1];const v=localStorage.getItem(LKEY);if(v)return v}catch(e){}
+  const n=(navigator.language||'').toLowerCase();return n.startsWith('ja')?'ja':(n.startsWith('zh')?'zh':'en')})();
+const L_=()=>T[LANG];
+const ORIG={};
+document.querySelectorAll('[data-i18n]').forEach(el=>ORIG[el.dataset.i18n]=el.innerHTML);
+const ORIG_PH=document.getElementById('q').placeholder;
+function applyStatic(){
+  document.documentElement.lang=LANG==='zh'?'zh-Hant':(LANG==='en'?'en-GB':'ja');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;el.innerHTML=LANG==='zh'?ORIG[k]:L_()[k]});
+  document.getElementById('q').placeholder=LANG==='zh'?ORIG_PH:L_().ph;
+  document.querySelectorAll('.langsw button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===LANG?'true':'false'));
+}
+
 const DECK=[];
 MAJ.forEach((m,i)=>{const j=JA_MAJ[i];DECK.push({id:i,major:true,idx:i,zh:m[0],py:m[1],en:m[2],badge:m[3],kw:m[4].split('|'),kwen:m[5].split('|'),up:m[6],rev:m[7],yn:m[8],
-  ja:{name:j[0],kana:j[1],kw:j[2].split('|'),up:j[3],rev:j[4]}})});
+  ja:{name:j[0],kana:j[1],kw:j[2].split('|'),up:j[3],rev:j[4]},enUp:EN_MAJ[i][0],enRev:EN_MAJ[i][1]})});
 SUITS.forEach(s=>MIN[s.k].forEach((m,r)=>{const rank=r+1,j=JA_MIN[s.k][r];DECK.push({id:DECK.length,major:false,suit:s.k,rank,
   ja:{name:JA_SUIT[s.k]+'の'+JA_RANK[r],kana:'',kw:j[0].split('|'),up:j[1],rev:j[2]},
-  zh:s.zh+RANK_ZH[r],py:s.py+' '+RANK_PY[r],en:(RANK_EN[r]+' of '+s.en),badge:RANK_BADGE[r],kw:m[0].split('|'),kwen:m[1].split('|'),up:m[2],rev:m[3],
+  enUp:EN_MIN[s.k][r][0],enRev:EN_MIN[s.k][r][1],zh:s.zh+RANK_ZH[r],py:s.py+' '+RANK_PY[r],en:(RANK_EN[r]+' of '+s.en),badge:RANK_BADGE[r],kw:m[0].split('|'),kwen:m[1].split('|'),up:m[2],rev:m[3],
   yn:YN_NEG[s.k].includes(rank)?'n':(YN_MID[s.k].includes(rank)?'m':'y')})}));
 
 /* ---------- Card face ---------- */
@@ -635,15 +694,20 @@ const fan=$('#fan'),slots=$('#slots'),hint=$('#hint'),reading=$('#reading'),reve
 let deck=[],picks=[],spreadKey='daily',busy=false,phase='pick';
 
 function renderSpreadPicker(){
-  $('#spreadGroups').innerHTML=GROUPS.map(g=>`<div class="sg"><p class="sg-title">${g[0]}<span>${g[1]} · <span lang="ja">${g[2]}</span></span></p><div class="spreads">${
-    g[3].map(s=>`<input type="radio" name="spread" id="sp-${s[0]}" value="${s[0]}"${s[0]===spreadKey?' checked':''}><label for="sp-${s[0]}"><b>${s[1]}</b><span class="cnt">${SPREADS[s[0]].n} 張</span></label>`).join('')}</div></div>`).join('');
+  const gt=g=>LANG==='zh'?`${g[0]}<span>${g[1]} · <span lang="ja">${g[2]}</span></span>`:(LANG==='en'?`${g[1]}<span>${g[0]}</span>`:`<span lang="ja">${g[2]}</span><span>${g[0]}</span>`);
+  const nm=s=>LANG==='zh'?s[1]:(LANG==='en'?s[2]:s[3]);
+  const cn=n=>LANG==='zh'?n+' 張':L_().cnt(n);
+  $('#spreadGroups').innerHTML=GROUPS.map(g=>`<div class="sg"><p class="sg-title">${gt(g)}</p><div class="spreads">${
+    g[3].map(s=>`<input type="radio" name="spread" id="sp-${s[0]}" value="${s[0]}"${s[0]===spreadKey?' checked':''}><label for="sp-${s[0]}"><b>${nm(s)}</b><span class="cnt">${cn(SPREADS[s[0]].n)}</span></label>`).join('')}</div></div>`).join('');
   document.querySelectorAll('input[name="spread"]').forEach(r=>r.addEventListener('change',()=>{spreadKey=r.value;renderSpreadInfo();resetAll(true)}));
   renderSpreadInfo();
 }
 function renderSpreadInfo(){
   const sp=SPREADS[spreadKey];
-  $('#spInfo').innerHTML=`<h3>${sp.title}<small>${sp.en}</small><span class="ja" lang="ja">${sp.ja}</span></h3>
-  <ol class="pos-list">${sp.labels.map((l,i)=>`<li><b>${i+1}</b>${l[0]}</li>`).join('')}</ol>`;
+  const li=LANG==='zh'?0:(LANG==='en'?1:2);
+  $('#spInfo').innerHTML=(LANG==='zh'?`<h3>${sp.title}<small>${sp.en}</small><span class="ja" lang="ja">${sp.ja}</span></h3>`
+    :`<h3>${LANG==='en'?sp.en:sp.ja}<small>${sp.title}</small></h3>`)+
+  `<ol class="pos-list">${sp.labels.map((l,i)=>`<li><b>${i+1}</b>${l[li]}</li>`).join('')}</ol>`;
 }
 
 function shuffleDeck(){
@@ -656,7 +720,7 @@ function renderFan(){
   fan.innerHTML='';fan.classList.remove('done');
   for(let i=0;i<FAN_N;i++){
     const b=document.createElement('button');b.type='button';b.className='fc';b.dataset.i=i;
-    b.setAttribute('aria-label',`第 ${i+1} 張牌`);b.innerHTML=backSVG;
+    b.setAttribute('aria-label',LANG==='zh'?`第 ${i+1} 張牌`:L_().aCard(i+1));b.innerHTML=backSVG;
     b.style.setProperty('--j',fx((rand()-.5)*14));b.style.zIndex=i;
     b.addEventListener('click',()=>pick(b));fan.appendChild(b);
   }
@@ -674,12 +738,14 @@ function renderSlots(){
   const sp=SPREADS[spreadKey];
   slots.style.setProperty('--sw',sp.n===1?'200px':sp.n<=3?'170px':sp.n<=6?'118px':'96px');
   slots.classList.toggle('compact',sp.n>4);
-  slots.innerHTML=sp.labels.map((l,i)=>`<div class="slot"><div class="slot-label">${sp.n>1?`<span class="num">${i+1}</span>`:''}${l[0]}<small>${l[1]}</small><small class="ja" lang="ja">${l[2]}</small></div><div class="frame" data-s="${i}">${i+1}</div></div>`).join('');
+  slots.innerHTML=sp.labels.map((l,i)=>`<div class="slot"><div class="slot-label">${sp.n>1?`<span class="num">${i+1}</span>`:''}${LANG==='zh'?`${l[0]}<small>${l[1]}</small><small class="ja" lang="ja">${l[2]}</small>`:(LANG==='en'?`${l[1]}<small>${l[0]}</small>`:`<span lang="ja">${l[2]}</span><small>${l[0]}</small>`)}</div><div class="frame" data-s="${i}">${i+1}</div></div>`).join('');
 }
 function updateHint(){
   const sp=SPREADS[spreadKey];const left=sp.n-picks.length;
   fan.classList.toggle('cutting',phase==='cut');
-  if(phase==='cut')setHint('先切牌：憑感覺點牌堆的一個位置 <em>— tap anywhere to cut</em>');
+  if(LANG!=='zh'){const t=L_();
+    if(phase==='cut')setHint(t.hCut);else if(left>0)setHint(t.hPick(left));else if(picks.some(p=>!p.open))setHint(t.hReveal);else setHint(t.hDone);}
+  else if(phase==='cut')setHint('先切牌：憑感覺點牌堆的一個位置 <em>— tap anywhere to cut</em>');
   else if(left>0)setHint(`靜下心想著你的問題，憑直覺選 <b>${left}</b> 張 <em>— pick ${left} ${left>1?'cards':'card'}</em>`);
   else if(picks.some(p=>!p.open))setHint('點一下牌面翻開 <em>— tap to reveal</em>');
   else setHint('牌已翻開，往下看解讀 <em>— your reading is below</em>');
@@ -705,7 +771,7 @@ function cutAt(el){
   deck=deck.slice(k).concat(deck.slice(0,k));
   phase='pick';
   if(reduce){updateHint();return}
-  busy=true;fan.classList.add('gather');setHint('切牌中… <em>— cutting</em>');
+  busy=true;fan.classList.add('gather');setHint(LANG==='zh'?'切牌中… <em>— cutting</em>':L_().hCutting);
   setTimeout(()=>{fan.classList.remove('gather');busy=false;updateHint()},600);
 }
 async function pick(el){
@@ -721,7 +787,7 @@ async function pick(el){
   const angle=el.style.getPropertyValue('--a');
   el.classList.add('taken');
   frame.classList.add('filled');
-  frame.innerHTML=`<button type="button" class="flip" aria-label="翻開第 ${slotIdx+1} 張牌" style="visibility:hidden"><div class="flip-inner"><div class="side back">${backSVG}</div><div class="side front"><div class="face${rev?' rev':''}">${cardFace(DECK[id])}</div></div></div></button>`;
+  frame.innerHTML=`<button type="button" class="flip" aria-label="${LANG==='zh'?`翻開第 ${slotIdx+1} 張牌`:L_().aFlip(slotIdx+1)}" style="visibility:hidden"><div class="flip-inner"><div class="side back">${backSVG}</div><div class="side front"><div class="face${rev?' rev':''}">${cardFace(DECK[id])}</div></div></div></button>`;
   const flip=frame.querySelector('.flip');
   await fly(el,flip,angle);
   flip.style.visibility='';
@@ -742,7 +808,8 @@ const YN_TXT={y:['是','傾向肯定','Likely yes','はい（前向き）'],m:['
 function ynOf(p){const c=DECK[p.id];if(!p.rev)return c.yn;return c.yn==='y'?'m':c.yn}
 function showReading(){
   const sp=SPREADS[spreadKey];const q=$('#q').value.trim();const now=new Date();
-  const dateStr=now.toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+  const dateStr=now.toLocaleDateString(LANG==='zh'?'zh-TW':L_().loc,{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+  if(LANG!=='zh'){showReadingL(sp,q,dateStr);return}
   let html=`<div class="r-head"><p class="eyebrow">${esc(sp.title)}</p><h2>${q?esc(q):'今天的牌想對你說'}</h2><time>${dateStr}</time></div>`;
   if(spreadKey==='yn'){const y=YN_TXT[ynOf(picks[0])];html+=`<div class="yn"><span class="yn-ans">${y[0]}</span><span class="yn-txt"><b>${y[1]}</b><small>${y[2]}</small><span class="ja" lang="ja">${y[3]}</span></span></div>`}
   picks.forEach((p,i)=>{const c=DECK[p.id];
@@ -757,6 +824,10 @@ function showReading(){
   html+=`<div class="r-foot"><button class="btn" type="button" id="copyBtn">複製結果</button><button class="btn ghost" type="button" id="againBtn">再抽一次</button></div>
   <textarea id="copyFallback" readonly hidden></textarea>
   <p class="note">牌義僅供自我覺察與娛樂參考，重要決定請以實際情況為準。</p>`;
+  finishReading(html,q);
+}
+let quiet=false;
+function finishReading(html,q){
   reading.innerHTML=html;reading.hidden=false;
   reading.querySelectorAll('.tilt').forEach(t=>{const inn=t.querySelector('.tilt-in'),face=t.querySelector('.face');
     t.addEventListener('pointermove',e=>{if(reduce)return;const r=t.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
@@ -765,10 +836,34 @@ function showReading(){
     t.addEventListener('pointerleave',()=>{inn.style.setProperty('--ry','0deg');inn.style.setProperty('--rx','0deg')})});
   $('#copyBtn').addEventListener('click',copyResult);
   $('#againBtn').addEventListener('click',()=>{resetAll(true);document.querySelector('.table').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})});
-  saveHistory(q);
-  setTimeout(()=>reading.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}),reduce?0:250);
+  if(!quiet)saveHistory(q);
+  if(!quiet)setTimeout(()=>reading.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}),reduce?0:250);
+}
+function showReadingL(sp,q,dateStr){
+  const t=L_(),en=LANG==='en',li=en?1:2;
+  let html=`<div class="r-head"><p class="eyebrow">${esc(en?sp.en:sp.ja)} · ${esc(sp.title)}</p><h2>${q?esc(q):t.defQ}</h2><time>${dateStr}</time></div>`;
+  if(spreadKey==='yn'){const k=ynOf(picks[0]),y=t.yn[k];html+=`<div class="yn"><span class="yn-ans">${y[0]}</span><span class="yn-txt"><b>${y[1]}</b><small>${YN_TXT[k][0]} · ${YN_TXT[k][1]}</small></span></div>`}
+  picks.forEach((p,i)=>{const c=DECK[p.id];
+    const name=en?c.en:c.ja.name, kws=en?c.kwen:c.ja.kw, mean=en?(p.rev?c.enRev:c.enUp):(p.rev?c.ja.rev:c.ja.up);
+    html+=`<article class="r-card"><div class="tilt"><div class="tilt-in"><div class="side" style="transform:none"><div class="face${p.rev?' rev':''}">${cardFace(c)}</div></div></div></div>
+    <div class="r-text"><p class="pos">${esc(sp.labels[i][li])}${sp.labels[i][li]!==sp.labels[i][0]?` · ${esc(sp.labels[i][0])}`:''}</p>
+    <h3>${esc(name)}${!en&&c.ja.kana?`<span class="py">${esc(c.ja.kana)}</span>`:''}</h3>
+    <p class="zh-learn"><span class="tag">${t.learn}</span> <b>${esc(c.zh)}</b><span class="py">${esc(c.py)}</span></p>
+    <span class="pill${p.rev?' rev':''}">${p.rev?t.rev:t.up}</span>
+    <ul class="kw">${kws.map((k,j)=>`<li>${esc(k)}${k!==c.kw[j]?`<small>${esc(c.kw[j])}</small>`:''}</li>`).join('')}</ul>
+    <p class="meaning"${en?'':' lang="ja"'}>${esc(mean)}</p></div></article>`});
+  html+=`<div class="r-foot"><button class="btn" type="button" id="copyBtn">${t.copy}</button><button class="btn ghost" type="button" id="againBtn">${t.again}</button></div>
+  <textarea id="copyFallback" readonly hidden></textarea>
+  <p class="note">${t.note}</p>`;
+  finishReading(html,q);
 }
 function resultText(){
+  if(LANG!=='zh'){const t=L_(),en=LANG==='en',sp=SPREADS[spreadKey],q=$('#q').value.trim(),li=en?1:2;
+    let s=`【${en?'Tarot & Chinese':'タロットで中国語'}｜${en?sp.en:sp.ja}】\n`+(q?`${t.q}: ${q}\n`:'');
+    if(spreadKey==='yn'){const y=t.yn[ynOf(picks[0])];s+=`${t.ans}: ${y[0]} (${y[1]})\n`}
+    picks.forEach((p,i)=>{const c=DECK[p.id];
+      s+=`\n${sp.labels[i][li]}｜${en?c.en:c.ja.name}｜${c.zh} ${c.py}｜${(p.rev?t.rev:t.up).replace(/ <small>.*<\/small>/,'')}\n${t.kw}: ${(en?c.kwen:c.ja.kw).join(en?', ':'・')}\n${en?(p.rev?c.enRev:c.enUp):(p.rev?c.ja.rev:c.ja.up)}\n`});
+    return s;}
   const sp=SPREADS[spreadKey],q=$('#q').value.trim();
   let t=`【塔羅學中文｜${sp.title}】\n`+(q?`問題：${q}\n`:'');
   if(spreadKey==='yn'){const y=YN_TXT[ynOf(picks[0])];t+=`答案：${y[0]}（${y[1]}）／${y[3]}\n`}
@@ -777,8 +872,8 @@ function resultText(){
 }
 function copyResult(){
   const btn=$('#copyBtn'),txt=resultText(),fb=$('#copyFallback');
-  const fail=()=>{fb.value=txt;fb.hidden=false;fb.focus();fb.select();btn.textContent='請手動複製下方文字'};
-  try{navigator.clipboard.writeText(txt).then(()=>{btn.textContent='已複製';setTimeout(()=>btn.textContent='複製結果',1800)},fail)}catch(e){fail()}
+  const fail=()=>{fb.value=txt;fb.hidden=false;fb.focus();fb.select();btn.textContent=LANG==='zh'?'請手動複製下方文字':L_().copyFail};
+  try{navigator.clipboard.writeText(txt).then(()=>{btn.textContent=LANG==='zh'?'已複製':L_().copied;setTimeout(()=>btn.textContent=LANG==='zh'?'複製結果':L_().copy,1800)},fail)}catch(e){fail()}
 }
 
 /* ---------- History ---------- */
@@ -791,9 +886,9 @@ function saveHistory(q){
 }
 function renderHist(h=loadHist()){
   const el=$('#hist');
-  if(!h.length){el.innerHTML='<p class="empty">還沒有紀錄。抽完牌後會自動存在這台裝置上（最多 8 筆）。</p>';return}
+  if(!h.length){el.innerHTML=`<p class="empty">${LANG==='zh'?'還沒有紀錄。抽完牌後會自動存在這台裝置上（最多 8 筆）。':L_().empty}</p>`;return}
   el.innerHTML='<ol>'+h.map(r=>{const d=new Date(r.t);const sp=SPREADS[r.s]||SPREADS.daily;
-    return `<li><time>${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}</time><span>${sp.title}：${r.c.map(([id,rv])=>esc(DECK[id].zh)+(rv?'（逆）':'')).join('、')}</span>${r.q?`<span class="q">「${esc(r.q)}」</span>`:''}</li>`}).join('')+'</ol>';
+    return `<li><time>${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}</time><span>${LANG==='zh'?`${sp.title}：${r.c.map(([id,rv])=>esc(DECK[id].zh)+(rv?'（逆）':'')).join('、')}`:`${LANG==='en'?sp.en:sp.ja}: ${r.c.map(([id,rv])=>esc(LANG==='en'?DECK[id].en:DECK[id].ja.name)+(rv?L_().revMark:'')).join(LANG==='en'?', ':'、')}`}</span>${r.q?`<span class="q">「${esc(r.q)}」</span>`:''}</li>`}).join('')+'</ol>';
 }
 
 /* ---------- Controls ---------- */
@@ -809,12 +904,19 @@ $('#shuffleBtn').addEventListener('click',()=>{
   if(reduce){resetAll(true);return}
   busy=true;fan.classList.remove('done');
   [...fan.children].forEach(c=>c.classList.remove('taken'));
-  fan.classList.add('gather');setHint('洗牌中… <em>— shuffling</em>');revealBtn.hidden=true;resetBtn.hidden=true;
+  fan.classList.add('gather');setHint(LANG==='zh'?'洗牌中… <em>— shuffling</em>':L_().hShuffling);revealBtn.hidden=true;resetBtn.hidden=true;
   setTimeout(()=>{shuffleDeck();phase=$('#cutToggle').checked?'cut':'pick';fan.classList.remove('gather');busy=false;updateHint()},700);
 });
 resetBtn.addEventListener('click',()=>resetAll(true));
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(layoutFan,120)});
 
+function setLang(l){LANG=l;try{localStorage.setItem(LKEY,l)}catch(e){}applyStatic();renderSpreadPicker();
+  if(picks.length===0)renderFan();renderSlotsKeep();updateHint();renderHist();if(!reading.hidden){quiet=true;showReading();quiet=false}}
+function renderSlotsKeep(){if(picks.length===0){renderSlots();return}
+  const sp=SPREADS[spreadKey],li=LANG==='zh'?0:(LANG==='en'?1:2);
+  slots.querySelectorAll('.slot-label').forEach((el,i)=>{const l=sp.labels[i];el.innerHTML=(sp.n>1?`<span class="num">${i+1}</span>`:'')+(LANG==='zh'?`${l[0]}<small>${l[1]}</small><small class="ja" lang="ja">${l[2]}</small>`:(LANG==='en'?`${l[1]}<small>${l[0]}</small>`:`<span lang="ja">${l[2]}</span><small>${l[0]}</small>`))})}
+document.querySelectorAll('.langsw button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+applyStatic();
 renderSpreadPicker();shuffleDeck();phase=$('#cutToggle').checked?'cut':'pick';renderFan();renderSlots();updateHint();renderHist();
 })();
 </script>
