@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache">
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>塔羅學中文 抽牌</title>
@@ -924,5 +926,9 @@ renderSpreadPicker();shuffleDeck();phase=$('#cutToggle').checked?'cut':'pick';re
 <!-- Cloudflare Web Analytics (skip on devices opened once with ?notrack=1; undo with ?notrack=0) -->
 <script>(function(){try{var q=location.search;if(/[?&]notrack=1/.test(q))localStorage.setItem('cw-notrack','1');if(/[?&]notrack=0/.test(q))localStorage.removeItem('cw-notrack');if(localStorage.getItem('cw-notrack')==='1'){console.log('analytics off on this device');return}}catch(e){}var s=document.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';s.setAttribute('data-cf-beacon','{"token": "a9294b7012bb4e4bbf4b67f23979b202"}');document.body.appendChild(s)})();</script>
 <!-- End Cloudflare Web Analytics -->
+<!-- Auto-update: GitHub Pages lets browsers cache pages ~10 min; check for a newer build and refresh once -->
+<script>(function(){var B='BUILD:20261027080713';try{if(location.protocol.indexOf('http')!==0)return;
+fetch(location.href,{cache:'reload'}).then(function(r){return r.text()}).then(function(t){var m=t.match(/BUILD:(\d+)/);
+if(m&&('BUILD:20261027080713'+m[1])!==B){var k='autoupd-'+m[1];if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');location.reload()}}).catch(function(){})}catch(e){}})();</script>
 </body>
 </html>
